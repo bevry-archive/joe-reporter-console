@@ -8,7 +8,7 @@ Reporter name: `console`
 
 
 ## History
-You can discover the history inside the [History.md](https://github.com/bevry/joe/blob/master/History.md#files) file
+You can discover the history inside the [History.md](https://github.com/bevry/joe-reporter-console/blob/master/History.md#files) file
 
 
 ## License

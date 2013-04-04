@@ -1,6 +1,6 @@
 # Prepare
 isBrowser = window?
-isWindows = process? and process.platform.indexOf('win') is 0
+isWindows = process?.platform?.indexOf('win') is 0
 
 # Optional
 try

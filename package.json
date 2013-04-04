@@ -1,8 +1,8 @@
 {
 	"name": "joe-reporter-console",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "Console Reporter for the Joe Testing Framework",
-	"homepage": "https://github.com/bevry/joe",
+	"homepage": "https://github.com/bevry/joe-reporter-console",
 	"keywords": [
 		"joe", "joe-reporter"
 	],
@@ -14,11 +14,11 @@
 		"Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
 	],
 	"bugs": {
-		"url": "https://github.com/bevry/joe/issues"
+		"url": "https://github.com/bevry/joe-reporter-console/issues"
 	},
 	"repository" : {
 		"type": "git",
-		"url": "http://github.com/bevry/joe.git"
+		"url": "http://github.com/bevry/joe-reporter-console.git"
 	},
 	"engines" : {
 		"node": ">=0.4"
