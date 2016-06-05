@@ -3,15 +3,16 @@
 	"version": "1.2.1",
 	"description": "Console Reporter for the Joe Testing Framework",
 	"homepage": "https://github.com/bevry/joe-reporter-console",
+	"license": "MIT",
 	"keywords": [
 		"joe", "joe-reporter"
 	],
-	"author": "Bevry Pty Ltd <us@bevry.me> (http://bevry.me)",
+	"author": "2012+ Bevry Pty Ltd <us@bevry.me> (https://bevry.me)",
 	"maintainers": [
-		"Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
+		"Benjamin Lupton <b@lupton.cc> (https://balupton.com)"
 	],
 	"contributors": [
-		"Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
+		"Benjamin Lupton <b@lupton.cc> (https://balupton.com)"
 	],
 	"bugs": {
 		"url": "https://github.com/bevry/joe-reporter-console/issues"
@@ -20,20 +21,73 @@
 		"type": "git",
 		"url": "http://github.com/bevry/joe-reporter-console.git"
 	},
-	"engines" : {
-		"node": ">=0.4"
-	},
-	"peerDependencies": {
-		"joe": "1.x"
-	},
+  "engines": {
+    "node": ">=0.12"
+  },
+  "editions": [
+    {
+      "description": "Source + ESNext + Require",
+      "entry": "source/index.js",
+      "directory": "source",
+      "syntaxes": [
+        "javascript",
+        "esnext",
+        "require",
+        "const",
+        "let",
+        "spread",
+        "rest",
+        "destructuring",
+        "classes",
+        "arrows",
+        "template strings",
+        "shorthand",
+        "forof"
+      ]
+    },
+    {
+      "description": "Babel Compiled + ES2015 + Require",
+      "entry": "es2015/index.js",
+      "directory": "es2015",
+      "syntaxes": [
+        "javascript",
+        "es2015",
+        "require"
+      ]
+    }
+  ],
+  "main": "index.js",
+  "browser": "es2015/index.js",
+  "scripts": {
+    "setup": "npm install",
+    "clean": "rm -Rf ./docs ./es2015",
+    "compile": "npm run compile:es2015",
+    "compile:es2015": "babel ./source --out-dir ./es2015 --presets es2015",
+    "meta": "npm run meta:projectz",
+    "meta:projectz": "projectz compile",
+    "prepare": "npm run compile && npm run test && npm run meta",
+    "release": "npm run prepare && npm run release:publish && npm run release:tag && npm run release:push",
+    "release:publish": "npm publish",
+    "release:tag": "git tag v$npm_package_version -a",
+    "release:push": "git push origin master && git push origin --tags",
+    "pretest": "npm run test:eslint",
+    "test:eslint": "eslint ./source",
+    "test": "node --harmony -e \"require('editions').requirePackage(process.cwd(), require, 'test.js')\""
+  },
+  "dependencies": {
+    "editions": "^1.1.1"
+  },
 	"optionalDependencies": {
 		"cli-color": "~0.2.2"
 	},
-	"devDependencies": {
-		"coffee-script": "~1.6.2"
+	"peerDependencies": {
+		"joe": "1"
 	},
-	"directories": {
-		"lib": "./out/lib"
-	},
-	"main": "./out/lib/console.js"
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "eslint": "^2.11.1",
+    "eslint-plugin-babel": "^3.2.0",
+    "projectz": "^1.1.5"
+  }
 }
