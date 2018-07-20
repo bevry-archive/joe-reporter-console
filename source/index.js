@@ -6,11 +6,11 @@ const isWindows = process && process.platform && process.platform.indexOf('win')
 
 // Optional
 let cliColor = null
-if ( process ) {
+if (process) {
 	try {
 		cliColor = require('cli-color')
 	}
-	catch (e) {}
+	catch (e) { }
 }
 
 /**
@@ -20,62 +20,55 @@ Joe attaches and calls the methods of this classes instance.
 const joe = require('joe').addReporter(require('joe-reporter-console').create({color: false}))
 // joe.suite(...)
 @constructor
-@class ConsoleReporter
-@access public
+@param {Object} [config]
+@param {boolean} [config.color] - Enabled by default if not in the web browser, or `--no-colors` command line argument is missing
+@param {boolean} [config.utf8] - Enabled by default if not on Windows
+@param {string} [config.itemStart] - What to display when an item starts
+@param {string} [config.markFail] - What to display when an item fails
+@param {string} [config.markPass] - What to display when an item passes
+@param {string} [config.itemArrow] - What to join item names with
+@param {string} [config.summaryError] - What to display for error logs
+@param {string} [config.summaryPass] - What to display if all goes well
+@param {string} [config.summaryFail] - What to display if all went badly
+@public
 */
 class ConsoleReporter {
-	/**
-	Creates and returns new instance of the current class.
-	@param {...*} args - The arguments to be forwarded along to the constructor.
-	@return {Object} The new instance.
-	@static
-	@access public
-	*/
-	static create (...args) {
-		return new this(...args)
-	}
-
-	/**
-	Set the configuration for our instance
-	@param {Object} [config]
-	@param {boolean} [config.color] - Enabled by default if not in the web browser, or `--no-colors` command line argument is missing
-	@param {boolean} [config.utf8] - Enabled by default if not on Windows
-	@param {string} [config.itemStart] - What to display when an item starts
-	@param {string} [config.markFail] - What to display when an item fails
-	@param {string} [config.markPass] - What to display when an item passes
-	@param {string} [config.itemArrow] - What to join item names with
-	@param {string} [config.summaryError] - What to display for error logs
-	@param {string} [config.summaryPass] - What to display if all goes well
-	@param {string} [config.summaryFail] - What to display if all went badly
-	@chainable
-	@returns {this}
-	@access public
-	*/
 	constructor (config = {}) {
 		this.errors = []
 		this.config = config
 
 		// Defaults
-		if ( this.config.color == null )         this.config.color         = ((process && process.argv) || []).indexOf('--no-colors') === -1
-		if ( this.config.utf8 == null )          this.config.utf8          = !isWindows
-		if ( this.config.markFail == null )      this.config.markFail      = this.config.utf8 ? '✘' : 'ERR!'
-		if ( this.config.markPass == null )      this.config.markPass      = this.config.utf8 ? '✔' : 'OK  '
-		if ( this.config.itemNames == null )     this.config.itemNames     = this.config.utf8 ? '$a ➞ $b' : '$a > $b'
-		if ( this.config.itemStart == null )     this.config.itemStart     = '$name'
-		if ( this.config.itemFinish == null )    this.config.itemFinish    = '$name $mark'
-		if ( this.config.summaryError == null )  this.config.summaryError  = '\nError #$index:\n$name\n$error'
-		if ( this.config.summaryPass == null )   this.config.summaryPass   = '\n$totalPassedTests/$totalTests tests ran successfully, everything passed'
-		if ( this.config.summaryFail == null )   this.config.summaryFail   = '\nFAILURE: $totalPassedTests/$totalTests tests ran successfully; $totalFailedTests failed, $totalIncompleteTests incomplete, $totalErrors errors'
+		if (this.config.color == null) this.config.color = ((process && process.argv) || []).indexOf('--no-colors') === -1
+		if (this.config.utf8 == null) this.config.utf8 = !isWindows
+		if (this.config.markFail == null) this.config.markFail = this.config.utf8 ? '✘' : 'ERR!'
+		if (this.config.markPass == null) this.config.markPass = this.config.utf8 ? '✔' : 'OK  '
+		if (this.config.itemNames == null) this.config.itemNames = this.config.utf8 ? '$a ➞ $b' : '$a > $b'
+		if (this.config.itemStart == null) this.config.itemStart = '$name'
+		if (this.config.itemFinish == null) this.config.itemFinish = '$name $mark'
+		if (this.config.summaryError == null) this.config.summaryError = '\nError #$index:\n$name\n$error'
+		if (this.config.summaryPass == null) this.config.summaryPass = '\n$totalPassedTests/$totalTests tests ran successfully, everything passed'
+		if (this.config.summaryFail == null) this.config.summaryFail = '\nFAILURE: $totalPassedTests/$totalTests tests ran successfully; $totalFailedTests failed, $totalIncompleteTests incomplete, $totalErrors errors'
 
 		// Colors
-		if ( cliColor && this.config.color ) {
+		if (cliColor && this.config.color) {
 			this.config.markFail = cliColor.red(this.config.markFail)
 			this.config.markPass = cliColor.green(this.config.markPass)
-			this.config.itemArrow  = cliColor.black(this.config.itemArrow)
+			this.config.itemArrow = cliColor.black(this.config.itemArrow)
 			this.config.summaryError = cliColor.red.underline(this.config.summaryError)
 			this.config.summaryPass = cliColor.green.underline(this.config.summaryPass)
 			this.config.summaryFail = cliColor.red.bold.underline(this.config.summaryFail)
 		}
+	}
+
+	/**
+	Creates and returns new instance of the current class.
+	@param {...*} args - The arguments to be forwarded along to the constructor.
+	@return {Object} The new instance.
+	@static
+	@public
+	*/
+	static create (...args) {
+		return new this(...args)
 	}
 
 	/**
@@ -85,7 +78,7 @@ class ConsoleReporter {
 	@access private
 	*/
 	getItemName (item) {
-		return item.names.filter((name) => name !== 'global joe suite').reduce((a, b) => this.formatMessage(this.config.itemNames, {a, b}))
+		return item.names.filter((name) => name !== 'global joe suite').reduce((a, b) => this.formatMessage(this.config.itemNames, { a, b }))
 	}
 
 	/**
@@ -112,13 +105,13 @@ class ConsoleReporter {
 	*/
 	startSuite (suite) {
 		const format = this.config.itemStart
-		if ( !format )   return this
+		if (!format) return this
 
 		const name = this.getItemName(suite)
-		if ( !name )     return this
+		if (!name) return this
 
-		const message = this.formatMessage(format, {name})
-		if ( !message )  return this
+		const message = this.formatMessage(format, { name })
+		if (!message) return this
 
 		console.log(message)
 		return this
@@ -134,14 +127,14 @@ class ConsoleReporter {
 	*/
 	finishSuite (suite, err) {
 		const format = this.config.itemFinish
-		if ( !format )   return this
+		if (!format) return this
 
 		const name = this.getItemName(suite)
-		if ( !name )     return this
+		if (!name) return this
 
 		const mark = err ? this.config.markFail : this.config.markPass
-		const message = this.formatMessage(format, {name, mark})
-		if ( !message )  return this
+		const message = this.formatMessage(format, { name, mark })
+		if (!message) return this
 
 		console.log(message)
 		return this
@@ -156,13 +149,13 @@ class ConsoleReporter {
 	*/
 	startTest (test) {
 		const format = this.config.itemStart
-		if ( !format )   return this
+		if (!format) return this
 
 		const name = this.getItemName(test)
-		if ( !name )     return this
+		if (!name) return this
 
-		const message = this.formatMessage(format, {name})
-		if ( !message )  return this
+		const message = this.formatMessage(format, { name })
+		if (!message) return this
 
 		console.log(message)
 		return this
@@ -178,14 +171,14 @@ class ConsoleReporter {
 	*/
 	finishTest (test, err) {
 		const format = this.config.itemFinish
-		if ( !format )   return this
+		if (!format) return this
 
 		const name = this.getItemName(test)
-		if ( !name )     return this
+		if (!name) return this
 
 		const mark = err ? this.config.markFail : this.config.markPass
-		const message = this.formatMessage(format, {name, mark})
-		if ( !message )  return this
+		const message = this.formatMessage(format, { name, mark })
+		if (!message) return this
 
 		console.log(message)
 
@@ -206,12 +199,12 @@ class ConsoleReporter {
 			: this.formatMessage(this.config.summaryPass, totals)
 		)
 		this.joe.getErrorLogs().forEach((errorLog, index) => {
-			const {suite, test, name, err} = errorLog
+			const { suite, test, name, err } = errorLog
 			const item = test || suite
 			const message = this.formatMessage(this.config.summaryError, {
 				index: index + 1,
 				name: name || this.getItemName(item),
-				error: err.stack || err.message || err
+				error: err.fullStack || err.stack || err.message || err
 			})
 			console.log(message)
 		})

@@ -1,5 +1,9 @@
 # History
 
+## v2.0.2 2018 July 21
+- Added support for `fullStack` property on errors when reporting, which is used by [nerror](https://www.npmjs.com/package/nerror)
+- Updated base files using [boundation](https://github.com/bevry/boundation)
+
 ## v2.0.1 2016 November 4
 - Fixed tests not being published to npm for use in the testing ecosystem
 

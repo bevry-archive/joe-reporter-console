@@ -1,8 +1,8 @@
 'use strict'
 
-module.exports = require('joe/tester').tests({reporter: require.resolve('..')}, [
+module.exports = require('joe/tester').tests({ reporter: require.resolve('..') }, [
 
-// ------------------------------------
+	// ------------------------------------
 	{
 		script: require.resolve('joe-examples/lib/multi.js'),
 		expected: `
@@ -35,7 +35,7 @@ multi extra sync test example ✔
 	},
 
 
-// ------------------------------------
+	// ------------------------------------
 	{
 		script: require.resolve('joe-examples/lib/timing.js'),
 		expected: `
@@ -53,7 +53,7 @@ timing example ✔
 	},
 
 
-// ------------------------------------
+	// ------------------------------------
 	{
 		script: require.resolve('joe-examples/lib/standard.js'),
 		expected: `
@@ -124,7 +124,7 @@ Error: deliberate error`
 	},
 
 
-// ------------------------------------
+	// ------------------------------------
 	{
 		script: require.resolve('joe-examples/lib/fail-never-finish.js'),
 		expected: `
@@ -134,7 +134,7 @@ FAILURE: 0/1 tests ran successfully; 0 failed, 1 incomplete, 0 errors`
 	},
 
 
-// ------------------------------------
+	// ------------------------------------
 	{
 		script: require.resolve('joe-examples/lib/fail-throw-suite.js'),
 		expected: `
@@ -149,7 +149,7 @@ Error: I am the deliberate throw that occured during the suite`
 	},
 
 
-// ------------------------------------
+	// ------------------------------------
 	{
 		script: require.resolve('joe-examples/lib/fail-throw-test-uncaught.js'),
 		expected: `
@@ -166,5 +166,5 @@ Error: I am the deliberate throw that occured in the test, but after the test ha
 	}
 
 
-// All done
+	// All done
 ])
